@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PV CONSTRUCCIONES — Estructuras Metálicas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/iconify/2.0.0/iconify.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+            syne: ['Syne', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+    .font-syne { font-family: 'Syne', sans-serif; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #E30613; border-radius: 3px; }
+
+    @keyframes fadeInUpBlur {
+      0% { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    @keyframes beam-drop {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(500%); }
+    }
+    @keyframes border-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.4); }
+      50% { box-shadow: 0 0 0 14px rgba(37,211,102,0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes slogan-glow {
+      0%, 100% { text-shadow: 0 0 20px rgba(227,6,19,0.0); }
+      50% { text-shadow: 0 0 40px rgba(227,6,19,0.2); }
+    }
+
+    .animate-fade-up { animation: fadeInUpBlur 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    .delay-500 { animation-delay: 0.5s; }
+    .delay-600 { animation-delay: 0.6s; }
+    .delay-700 { animation-delay: 0.7s; }
+    .delay-800 { animation-delay: 0.8s; }
+    .delay-900 { animation-delay: 0.9s; }
+
+    .beam-line {
+      position: absolute;
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, #E30613, transparent);
+      animation: beam-drop 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    .dot-pattern {
+      background-image: radial-gradient(rgba(227, 6, 19, 0.15) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+    }
+
+    /* Hero video background */
+    .hero-video-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .hero-video-wrap iframe,
+    .hero-video-wrap video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 56.25vw; /* 16:9 */
+      min-height: 100vh;
+      min-width: 177.78vh; /* 16:9 */
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .service-card {
+      position: relative;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #E30613, transparent);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .service-card:hover {
+      background: rgba(227, 6, 19, 0.05);
+      border-color: rgba(227, 6, 19, 0.2);
+      transform: translateY(-4px);
+    }
+    .service-card:hover::before { opacity: 1; }
+    .service-card:hover .service-icon { color: #E30613; transform: scale(1.1); }
+    .service-icon { transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+    .client-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.4s;
+    }
+    .client-card:hover {
+      background: rgba(227, 6, 19, 0.05);
+      border-color: rgba(227, 6, 19, 0.15);
+    }
+
+    .cta-btn {
+      position: relative;
+      background: #E30613;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      overflow: hidden;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .cta-btn:hover {
+      background: #ff1a27;
+      box-shadow: 0 0 30px rgba(227, 6, 19, 0.4);
+      transform: translateY(-2px);
+    }
+    .cta-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .cta-btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .cta-btn-outline:hover {
+      border-color: #E30613;
+      color: #E30613;
+      background: rgba(227, 6, 19, 0.05);
+    }
+
+    .marquee-track {
+      display: flex;
+      animation: marquee 35s linear infinite;
+      width: max-content;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    .stat-item { text-align: center; position: relative; }
+    .stat-item::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 1px; height: 40px;
+      background: rgba(255,255,255,0.1);
+    }
+    .stat-item:last-child::after { display: none; }
+
+    .nav-glass {
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .hero-overlay {
+      background: linear-gradient(135deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.65) 50%, rgba(227,6,19,0.12) 100%);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      filter: blur(8px);
+      transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .contact-glow {
+      position: absolute;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(227,6,19,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .mobile-menu.open { transform: translateX(0); }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      max-width: 400px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: #16a34a; box-shadow: 0 10px 40px rgba(22,163,74,0.3); }
+    .toast.error { background: #dc2626; box-shadow: 0 10px 40px rgba(220,38,38,0.3); }
+
+    .conic-border {
+      position: relative;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .conic-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: conic-gradient(from 0deg, #E30613, transparent, #E30613);
+      border-radius: inherit;
+      animation: border-spin 3s linear infinite;
+    }
+    .conic-border > span {
+      position: relative;
+      display: block;
+      background: #0a0a0a;
+      border-radius: inherit;
+      padding: 0.4rem 1.2rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #E30613;
+      font-weight: 600;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    .gallery-item img { transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .gallery-item:hover img { transform: scale(1.08); }
+    .gallery-item .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    .slogan-text { animation: slogan-glow 4s ease-in-out infinite; }
+  </style>
+</head>
+<body class="font-inter">
+
+  <!-- NAVIGATION -->
+  <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 nav-glass rounded-full px-6 py-3 flex items-center gap-8 animate-fade-up" style="animation-delay: 0.1s;">
+    <a href="#" class="flex items-center gap-2 shrink-0">
+      <div class="w-8 h-8 bg-[#E30613] rounded-md flex items-center justify-center">
+        <span class="font-syne font-bold text-sm text-white">PV</span>
+      </div>
+      <span class="font-syne font-bold text-sm tracking-wide hidden sm:block">CONSTRUCCIONES</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="#servicios" class="text-xs uppercase tracking-widest text-neutral-400 hover:text-white transition-colors duration-300">Servicios</a>
+      <a href="#nosotros" class="text-xs uppercase tracking-widest text-neutral-400 hover:text-white transition-colors duration-300">Nosotros</a>
+      <a href="#clientes" class="text-xs uppercase tracking-widest text-neutral-400 hover:text-white transition-colors duration-300">Clientes</a>
+      <a href="#contacto" class="text-xs uppercase tracking-widest text-neutral-400 hover:text-white transition-colors duration-300">Contacto</a>
+    </div>
+    <a href="#contacto" class="hidden md:block text-xs uppercase tracking-widest bg-[#E30613] hover:bg-[#ff1a27] text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 hover:shadow-[0_0_20px_rgba(227,6,19,0.3)]">
+      Cotizar
+    </a>
+    <button id="menuToggle" class="md:hidden text-white">
+      <span class="iconify" data-icon="mdi:menu" data-width="24"></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] bg-[#0a0a0a]/98 backdrop-blur-xl flex flex-col items-center justify-center gap-8">
+    <button id="menuClose" class="absolute top-8 right-8 text-white">
+      <span class="iconify" data-icon="mdi:close" data-width="28"></span>
+    </button>
+    <a href="#servicios" class="mobile-link text-2xl font-syne font-semibold text-white hover:text-[#E30613] transition-colors">Servicios</a>
+    <a href="#nosotros" class="mobile-link text-2xl font-syne font-semibold text-white hover:text-[#E30613] transition-colors">Nosotros</a>
+    <a href="#clientes" class="mobile-link text-2xl font-syne font-semibold text-white hover:text-[#E30613] transition-colors">Clientes</a>
+    <a href="#contacto" class="mobile-link text-2xl font-syne font-semibold text-white hover:text-[#E30613] transition-colors">Contacto</a>
+    <a href="#contacto" class="mt-4 cta-btn text-sm">Cotizar Ahora</a>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="relative min-h-screen flex items-center overflow-hidden">
+    <!-- Video de fondo -->
+    <div class="hero-video-wrap">
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        class="w-full h-full"
+      >
+        <source src="https://res.cloudinary.com/dknplsvyl/video/upload/v1778033670/2018_11_09_16_42_11_2_gpclxd.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-overlay absolute inset-0 z-[1]"></div>
+    <div class="absolute inset-0 dot-pattern opacity-40 z-[2]"></div>
+    <div class="beam-line z-[2]" style="left: 15%; animation-delay: 0s;"></div>
+    <div class="beam-line z-[2]" style="left: 45%; animation-delay: 1.5s;"></div>
+    <div class="beam-line z-[2]" style="left: 78%; animation-delay: 3s;"></div>
+    <div class="absolute top-1/2 right-0 -translate-y-1/2 w-[500px] h-[500px] bg-[#E30613] opacity-[0.04] rounded-full blur-[100px] z-[2]"></div>
+
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pt-32 pb-20">
+      <div class="max-w-4xl">
+        <div class="animate-fade-up delay-200 mb-8">
+          <div class="conic-border inline-block">
+            <span>Estructuras Metálicas</span>
+          </div>
+        </div>
+
+        <h1 class="font-syne font-extrabold text-4xl sm:text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] tracking-tight mb-8 animate-fade-up delay-300 slogan-text">
+          Construimos el techo<br>de tu próximo <span class="text-[#E30613]">éxito.</span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-neutral-300 leading-relaxed max-w-xl mb-10 animate-fade-up delay-500">
+          Especialistas en galpones, techos, tinglados y estructuras metálicas. Soluciones industriales de alta calidad desde Quilmes para toda Argentina.
+        </p>
+
+        <div class="flex flex-wrap gap-4 animate-fade-up delay-600">
+          <a href="#contacto" class="cta-btn text-sm gap-2">
+            <span>Solicitar Presupuesto</span>
+            <span class="iconify" data-icon="mdi:arrow-right" data-width="18"></span>
+          </a>
+          <a href="#servicios" class="cta-btn-outline text-sm gap-2">
+            <span>Ver Servicios</span>
+          </a>
+        </div>
+
+        <div class="flex flex-wrap gap-8 mt-14 animate-fade-up delay-700">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-[#E30613]/10 border border-[#E30613]/20 flex items-center justify-center">
+              <span class="iconify text-[#E30613]" data-icon="mdi:map-marker" data-width="20"></span>
+            </div>
+            <div>
+              <p class="text-xs text-neutral-500 uppercase tracking-wider">Ubicación</p>
+              <p class="text-sm font-medium">Quilmes, Argentina</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-[#E30613]/10 border border-[#E30613]/20 flex items-center justify-center">
+              <span class="iconify text-[#E30613]" data-icon="mdi:phone" data-width="20"></span>
+            </div>
+            <div>
+              <p class="text-xs text-neutral-500 uppercase tracking-wider">Teléfono</p>
+              <p class="text-sm font-medium">11 5768-4524</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-[#E30613]/10 border border-[#E30613]/20 flex items-center justify-center">
+              <span class="iconify text-[#E30613]" data-icon="mdi:shield-check" data-width="20"></span>
+            </div>
+            <div>
+              <p class="text-xs text-neutral-500 uppercase tracking-wider">Respuesta</p>
+              <p class="text-sm font-medium">24hs</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-fade-up delay-900 z-10">
+      <span class="text-[10px] uppercase tracking-[0.2em] text-neutral-500">Scroll</span>
+      <div class="w-5 h-8 rounded-full border border-neutral-700 flex justify-center pt-1.5">
+        <div class="w-1 h-2 bg-[#E30613] rounded-full" style="animation: float 1.5s ease-in-out infinite;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="border-y border-white/5 py-4 overflow-hidden bg-[#0d0d0d]">
+    <div class="marquee-track">
+      <div class="flex items-center gap-12 px-6">
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Microenvases</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Bruno Bianchi</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Ornel Logística SRL</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Quilmes Atlético Club</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Trieco</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Droguería Farmaquio</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Anoxide S.R.L</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Borgo SA</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">3H Gazebos</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Bagues</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Industrias Plásticas Bernal</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Cono Sur S.A.</span>
+        <span class="text-[#E30613]/30">✦</span>
+      </div>
+      <div class="flex items-center gap-12 px-6">
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Microenvases</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Bruno Bianchi</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Ornel Logística SRL</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Quilmes Atlético Club</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Trieco</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Droguería Farmaquio</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Anoxide S.R.L</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Borgo SA</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">3H Gazebos</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Bagues</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Industrias Plásticas Bernal</span>
+        <span class="text-[#E30613]/30">✦</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-600 whitespace-nowrap font-semibold">Cono Sur S.A.</span>
+        <span class="text-[#E30613]/30">✦</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="servicios" class="relative py-24 md:py-32">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#E30613] opacity-[0.02] rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div class="reveal mb-16 md:mb-20">
+        <p class="text-xs uppercase tracking-[0.25em] text-[#E30613] font-semibold mb-4">Nuestros Servicios</p>
+        <h2 class="font-syne font-bold text-3xl md:text-5xl lg:text-6xl tracking-tight leading-tight">
+          Soluciones y<br><span class="text-neutral-500">Proyectos para la construccion</span>
+        </h2>
+        <p class="mt-6 text-neutral-400 text-lg max-w-xl leading-relaxed">
+          Cada proyecto es diseñado con precisión ingenieril, materiales de primera calidad y un equipo comprometido con los tiempos de entrega.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="service-card reveal" style="transition-delay: 0.05s;">
+          <div class="service-icon text-neutral-500 mb-6">
+            <span class="iconify" data-icon="mdi:warehouse" data-width="40"></span>
+          </div>
+          <h3 class="font-syne font-semibold text-xl mb-3">Galpones</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Galpones industriales y comerciales a medida. Estructuras modulares o personalizadas con la máxima resistencia y amplitud.</p>
+        </div>
+        <div class="service-card reveal" style="transition-delay: 0.1s;">
+          <div class="service-icon text-neutral-500 mb-6">
+            <span class="iconify" data-icon="mdi:home-roof" data-width="40"></span>
+          </div>
+          <h3 class="font-syne font-semibold text-xl mb-3">Techos</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Instalación de techos metálicos con acabados premium. Protección total contra intemperie con diseño funcional y estético.</p>
+        </div>
+        <div class="service-card reveal" style="transition-delay: 0.15s;">
+          <div class="service-icon text-neutral-500 mb-6">
+            <span class="iconify" data-icon="mdi:car-port" data-width="40"></span>
+          </div>
+          <h3 class="font-syne font-semibold text-xl mb-3">Tinglados</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Tinglados para estacionamiento, carga y descarga. Soluciones livianas pero resistentes, adaptables a cualquier terreno.</p>
+        </div>
+        <div class="service-card reveal" style="transition-delay: 0.2s;">
+          <div class="service-icon text-neutral-500 mb-6">
+            <span class="iconify" data-icon="mdi:roof-construction" data-width="40"></span>
+          </div>
+          <h3 class="font-syne font-semibold text-xl mb-3">Cambios de Cubierta</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Renovación completa de techos existentes. Retiro de cubiertas viejas e instalación de nuevos sistemas impermeables.</p>
+        </div>
+        <div class="service-card reveal" style="transition-delay: 0.25s;">
+          <div class="service-icon text-neutral-500 mb-6">
+            <span class="iconify" data-icon="mdi:water-pump" data-width="40"></span>
+          </div>
+          <h3 class="font-syne font-semibold text-xl mb-3">Zinguería</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Sistemas completos de desagüe pluvial: canaletas, cañerías y bajadas. Trabajo prolijo con materiales galvanizados o aluminio.</p>
+        </div>
+        <div class="service-card reveal" style="transition-delay: 0.3s;">
+          <div class="service-icon text-neutral-500 mb-6">
+            <span class="iconify" data-icon="mdi:arrow-expand-horizontal" data-width="40"></span>
+          </div>
+          <h3 class="font-syne font-semibold text-xl mb-3">Movimiento de Piso</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed">Ampliación de plantas industriales y comerciales. Movimiento de estructuras y pisos para expansión de tu espacio productivo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="nosotros" class="relative py-24 md:py-32 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div class="reveal relative">
+          <div class="relative rounded-2xl overflow-hidden aspect-[4/3]">
+            <img src="https://i.postimg.cc/nh2gj63C/182147-400635789996192-918557006-n.jpg" alt="PV Construcciones - Quiénes somos" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 to-transparent"></div>
+          </div>
+          <div class="absolute -bottom-6 -right-4 md:-right-8 bg-[#E30613] rounded-xl p-5 shadow-[0_0_40px_rgba(227,6,19,0.3)]" style="animation: float 3s ease-in-out infinite;">
+            <p class="text-3xl font-syne font-bold">20+</p>
+            <p class="text-xs uppercase tracking-wider text-white/80">Años de<br>experiencia</p>
+          </div>
+          <div class="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-[#E30613]/30 rounded-tl-2xl pointer-events-none"></div>
+        </div>
+        <div>
+          <div class="reveal">
+            <p class="text-xs uppercase tracking-[0.25em] text-[#E30613] font-semibold mb-4">Quiénes Somos</p>
+            <h2 class="font-syne font-bold text-3xl md:text-4xl lg:text-5xl tracking-tight leading-tight mb-6">
+              Experiencia que se <span class="text-[#E30613]">ve y dura</span>
+            </h2>
+            <p class="text-neutral-400 text-base md:text-lg leading-relaxed mb-6">
+              PV Construcciones es una empresa con más de 20 años de trayectoria en el mercado de estructuras metálicas. Desde nuestro taller en Quilmes, hemos construido galpones, techos y soluciones industriales para empresas de todo el país.
+            </p>
+            <p class="text-neutral-400 text-base md:text-lg leading-relaxed mb-10">
+              Nuestro equipo combina la experiencia artesanal con tecnología de última generación para entregar proyectos que superan las expectativas, en tiempo y forma.
+            </p>
+          </div>
+          <div class="reveal grid grid-cols-3 gap-0 bg-white/[0.02] rounded-xl border border-white/5 py-8 px-4">
+            <div class="stat-item">
+              <p class="font-syne font-bold text-2xl md:text-3xl text-white counter" data-target="200">0</p>
+              <p class="text-xs text-neutral-500 uppercase tracking-wider mt-1">Proyectos</p>
+            </div>
+            <div class="stat-item">
+              <p class="font-syne font-bold text-2xl md:text-3xl text-white counter" data-target="12">0</p>
+              <p class="text-xs text-neutral-500 uppercase tracking-wider mt-1">Empresas</p>
+            </div>
+            <div class="stat-item">
+              <p class="font-syne font-bold text-2xl md:text-3xl text-white">100<span class="text-[#E30613]">%</span></p>
+              <p class="text-xs text-neutral-500 uppercase tracking-wider mt-1">Compromiso</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="py-24 md:py-32 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="reveal mb-16 text-center">
+        <p class="text-xs uppercase tracking-[0.25em] text-[#E30613] font-semibold mb-4">Nuestras Obras</p>
+        <h2 class="font-syne font-bold text-3xl md:text-5xl tracking-tight">Proyectos que <span class="text-neutral-500">hablan</span></h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="gallery-item reveal aspect-[4/3]" style="transition-delay: 0.05s;">
+          <img src="https://i.postimg.cc/8C8Dw8hH/85fdd8de-2f84-4ffc-83e6-87fe2b93b2e1.png" alt="Galpón industrial" class="w-full h-full object-cover">
+          <div class="gallery-overlay"><p class="font-syne font-semibold text-sm">Galpón Industrial</p></div>
+        </div>
+        <div class="gallery-item reveal aspect-[4/3] lg:row-span-2" style="transition-delay: 0.1s;">
+          <img src="https://i.postimg.cc/brRsfyRp/estructurametalica.png" alt="Estructura metálica" class="w-full h-full object-cover">
+          <div class="gallery-overlay"><p class="font-syne font-semibold text-sm">Estructura Metálica</p></div>
+        </div>
+        <div class="gallery-item reveal aspect-[4/3]" style="transition-delay: 0.15s;">
+          <img src="https://i.postimg.cc/2SWN1HPr/494216660-9511617972226386-9046165968275670398-n.jpg" alt="Tinglado" class="w-full h-full object-cover">
+          <div class="gallery-overlay"><p class="font-syne font-semibold text-sm">Tinglado</p></div>
+        </div>
+        <div class="gallery-item reveal aspect-[4/3]" style="transition-delay: 0.2s;">
+          <img src="https://i.postimg.cc/FKgtZYFr/494137674-9511618105559706-9197447032859099239-n.jpg" alt="Cambio de cubierta" class="w-full h-full object-cover">
+          <div class="gallery-overlay"><p class="font-syne font-semibold text-sm">Cambio de Cubierta</p></div>
+        </div>
+        <div class="gallery-item reveal aspect-[4/3]" style="transition-delay: 0.25s;">
+          <img src="https://i.postimg.cc/N0tS5Q6W/494552649-9511610018893848-2581217347137984192-n.jpg" alt="Zinguería" class="w-full h-full object-cover">
+          <div class="gallery-overlay"><p class="font-syne font-semibold text-sm">Zinguería</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section id="clientes" class="py-24 md:py-32 border-t border-white/5 relative overflow-hidden">
+    <div class="absolute inset-0 dot-pattern opacity-20"></div>
+    <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div class="reveal mb-16 text-center">
+        <p class="text-xs uppercase tracking-[0.25em] text-[#E30613] font-semibold mb-4">Confían en Nosotros</p>
+        <h2 class="font-syne font-bold text-3xl md:text-5xl tracking-tight">Empresas que <span class="text-neutral-500">eligieron PV</span></h2>
+        <p class="mt-4 text-neutral-400 text-base max-w-lg mx-auto">Trabajamos con compañías líderes que valoran la calidad, la puntualidad y la profesionalidad.</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+        <div class="client-card reveal" style="transition-delay: 0.05s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:package-variant-closed" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Microenvases</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.1s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:food-steak" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Bruno Bianchi</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.15s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:truck-delivery" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Ornel Logística SRL</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.2s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:shield-star" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">QAC Juvenil</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.25s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:recycle" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Trieco</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.3s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:pill" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Droguería Farmaquio</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.35s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:flask" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Anoxide S.R.L</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.4s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:factory" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Borgo SA</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.45s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:storefront-outline" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">3H Gazebos</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.5s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:bag-personal" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Bagues</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.55s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:palette-swatch" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Ind. Plásticas Bernal</p>
+        </div>
+        <div class="client-card reveal" style="transition-delay: 0.6s;">
+          <span class="iconify text-neutral-600 mb-3" data-icon="mdi:earth" data-width="28"></span>
+          <p class="font-syne font-semibold text-sm text-neutral-300">Cono Sur S.A.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contacto" class="py-24 md:py-32 border-t border-white/5 relative">
+    <div class="contact-glow" style="top: -100px; left: -100px;"></div>
+    <div class="contact-glow" style="bottom: -100px; right: -100px;"></div>
+    <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <div class="reveal">
+          <p class="text-xs uppercase tracking-[0.25em] text-[#E30613] font-semibold mb-4">Contacto</p>
+          <h2 class="font-syne font-bold text-3xl md:text-4xl lg:text-5xl tracking-tight leading-tight mb-6">
+            Hablemos de tu <span class="text-[#E30613]">proyecto</span>
+          </h2>
+          <p class="text-neutral-400 text-base md:text-lg leading-relaxed mb-10">
+            Contanos qué necesitás y te damos una respuesta en menos de 24 horas. Presupuestos sin cargo y asesoramiento técnico profesional.
+          </p>
+
+          <div class="space-y-4">
+            <a href="tel:1157684524" class="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#E30613]/20 hover:bg-[#E30613]/5 transition-all duration-300 group">
+              <div class="w-12 h-12 rounded-lg bg-[#E30613]/10 border border-[#E30613]/20 flex items-center justify-center shrink-0 group-hover:bg-[#E30613]/20 transition-colors">
+                <span class="iconify text-[#E30613]" data-icon="mdi:phone" data-width="22"></span>
+              </div>
+              <div>
+                <p class="text-xs text-neutral-500 uppercase tracking-wider mb-0.5">Teléfono</p>
+                <p class="text-base font-medium group-hover:text-[#E30613] transition-colors">11 5768-4524</p>
+              </div>
+              <span class="iconify text-neutral-600 ml-auto group-hover:text-[#E30613] group-hover:translate-x-1 transition-all" data-icon="mdi:arrow-right" data-width="18"></span>
+            </a>
+            <a href="mailto:pablovidmar@hotmail.com" class="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#E30613]/20 hover:bg-[#E30613]/5 transition-all duration-300 group">
+              <div class="w-12 h-12 rounded-lg bg-[#E30613]/10 border border-[#E30613]/20 flex items-center justify-center shrink-0 group-hover:bg-[#E30613]/20 transition-colors">
+                <span class="iconify text-[#E30613]" data-icon="mdi:email-outline" data-width="22"></span>
+              </div>
+              <div>
+                <p class="text-xs text-neutral-500 uppercase tracking-wider mb-0.5">Email</p>
+                <p class="text-base font-medium group-hover:text-[#E30613] transition-colors">pablovidmar@hotmail.com</p>
+              </div>
+              <span class="iconify text-neutral-600 ml-auto group-hover:text-[#E30613] group-hover:translate-x-1 transition-all" data-icon="mdi:arrow-right" data-width="18"></span>
+            </a>
+            <div class="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+              <div class="w-12 h-12 rounded-lg bg-[#E30613]/10 border border-[#E30613]/20 flex items-center justify-center shrink-0">
+                <span class="iconify text-[#E30613]" data-icon="mdi:map-marker-outline" data-width="22"></span>
+              </div>
+              <div>
+                <p class="text-xs text-neutral-500 uppercase tracking-wider mb-0.5">Ubicación</p>
+                <p class="text-base font-medium">Quilmes, Buenos Aires, Argentina</p>
+              </div>
+            </div>
+          </div>
+
+          <a href="https://wa.me/5491157684524?text=Hola%2C%20quiero%20consultar%20por%20un%20presupuesto" target="_blank" class="inline-flex items-center gap-3 mt-8 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold text-sm uppercase tracking-wider px-6 py-3.5 rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(37,211,102,0.3)] hover:-translate-y-0.5">
+            <span class="iconify" data-icon="mdi:whatsapp" data-width="22"></span>
+            <span>Escribinos por WhatsApp</span>
+          </a>
+        </div>
+
+        <!-- FORMULARIO -->
+        <div class="reveal" style="transition-delay: 0.15s;">
+          <form id="contactForm" class="bg-white/[0.02] border border-white/5 rounded-2xl p-8 md:p-10 space-y-6">
+            <input type="hidden" name="_subject" value="Nuevo presupuesto - PV Construcciones">
+            <input type="text" name="_honey" style="display:none">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-xs uppercase tracking-wider text-neutral-500 font-medium mb-2">Nombre</label>
+                <input type="text" name="nombre" required placeholder="Tu nombre" class="w-full bg-white/[0.03] border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-[#E30613]/50 focus:bg-[#E30613]/5 transition-all duration-300">
+              </div>
+              <div>
+                <label class="block text-xs uppercase tracking-wider text-neutral-500 font-medium mb-2">Teléfono</label>
+                <input type="tel" name="telefono" required placeholder="11 XXXX-XXXX" class="w-full bg-white/[0.03] border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-[#E30613]/50 focus:bg-[#E30613]/5 transition-all duration-300">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-neutral-500 font-medium mb-2">Email</label>
+              <input type="email" name="email" required placeholder="tu@email.com" class="w-full bg-white/[0.03] border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-[#E30613]/50 focus:bg-[#E30613]/5 transition-all duration-300">
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-neutral-500 font-medium mb-2">Servicio</label>
+              <select name="servicio" required class="w-full bg-white/[0.03] border border-white/10 rounded-lg px-4 py-3 text-sm text-neutral-400 focus:outline-none focus:border-[#E30613]/50 focus:bg-[#E30613]/5 transition-all duration-300 appearance-none cursor-pointer" style="background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 24 24%22><path fill=%22%23666%22 d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position: right 12px center;">
+                <option value="" disabled selected>Seleccionar servicio</option>
+                <option value="galpones">Galpones</option>
+                <option value="techos">Techos</option>
+                <option value="tinglados">Tinglados</option>
+                <option value="cubierta">Cambio de Cubierta</option>
+                <option value="zingueria">Zinguería</option>
+                <option value="piso">Movimiento de Piso</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-neutral-500 font-medium mb-2">Mensaje</label>
+              <textarea name="mensaje" required rows="4" placeholder="Contanos sobre tu proyecto..." class="w-full bg-white/[0.03] border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-[#E30613]/50 focus:bg-[#E30613]/5 transition-all duration-300 resize-none"></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn" class="cta-btn w-full text-sm justify-center gap-2">
+              <span>Enviar Consulta</span>
+              <span class="iconify" data-icon="mdi:send" data-width="18"></span>
+            </button>
+            <p class="text-xs text-neutral-600 text-center">Respuesta en menos de 24 horas</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/5 py-12 md:py-16">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mb-12">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-[#E30613] rounded-lg flex items-center justify-center">
+              <span class="font-syne font-bold text-base text-white">PV</span>
+            </div>
+            <div>
+              <p class="font-syne font-bold text-lg tracking-wide">PV CONSTRUCCIONES</p>
+            </div>
+          </div>
+          <p class="text-sm text-neutral-500 leading-relaxed max-w-xs">
+            Especialistas en estructuras metálicas. Más de 20 años construyendo soluciones industriales desde Quilmes.
+          </p>
+          <p class="text-sm text-[#E30613]/70 font-syne font-medium mt-3 italic">Construimos el techo de tu próximo éxito.</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.15em] text-neutral-500 font-semibold mb-4">Navegación</p>
+          <div class="space-y-3">
+            <a href="#servicios" class="block text-sm text-neutral-400 hover:text-white transition-colors">Servicios</a>
+            <a href="#nosotros" class="block text-sm text-neutral-400 hover:text-white transition-colors">Nosotros</a>
+            <a href="#clientes" class="block text-sm text-neutral-400 hover:text-white transition-colors">Clientes</a>
+            <a href="#contacto" class="block text-sm text-neutral-400 hover:text-white transition-colors">Contacto</a>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.15em] text-neutral-500 font-semibold mb-4">Contacto</p>
+          <div class="space-y-3">
+            <a href="tel:1157684524" class="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
+              <span class="iconify" data-icon="mdi:phone" data-width="16"></span>
+              <span>11 5768-4524</span>
+            </a>
+            <a href="mailto:pablovidmar@hotmail.com" class="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
+              <span class="iconify" data-icon="mdi:email-outline" data-width="16"></span>
+              <span>pablovidmar@hotmail.com</span>
+            </a>
+            <p class="flex items-center gap-2 text-sm text-neutral-400">
+              <span class="iconify" data-icon="mdi:map-marker" data-width="16"></span>
+              <span>Quilmes, Argentina</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-neutral-600">© 2025 PV Construcciones. Todos los derechos reservados.</p>
+        <p class="text-xs text-neutral-700">Quilmes, Buenos Aires, Argentina</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOTANTE -->
+  <a href="https://wa.me/5491157684524?text=Hola%2C%20quiero%20consultar%20por%20un%20presupuesto" target="_blank" class="fixed bottom-6 left-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(37,211,102,0.3)] hover:shadow-[0_0_40px_rgba(37,211,102,0.5)] hover:scale-110 transition-all duration-300" style="animation: pulse-green 2s infinite;">
+    <span class="iconify text-white" data-icon="mdi:whatsapp" data-width="28"></span>
+  </a>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // ========================================
+    // MOBILE MENU
+    // ========================================
+    const menuToggle = document.getElementById('menuToggle');
+    const menuClose = document.getElementById('menuClose');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    menuToggle.addEventListener('click', () => mobileMenu.classList.add('open'));
+    menuClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    });
+
+    // ========================================
+    // SCROLL REVEAL
+    // ========================================
+    const revealElements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    revealElements.forEach(el => observer.observe(el));
+
+    // ========================================
+    // COUNTER ANIMATION
+    // ========================================
+    const counters = document.querySelectorAll('.counter');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.getAttribute('data-target'));
+          const start = performance.now();
+          function update(now) {
+            const progress = Math.min((now - start) / 2000, 1);
+            el.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3))) + '+';
+            if (progress < 1) requestAnimationFrame(update);
+          }
+          requestAnimationFrame(update);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObserver.observe(c));
+
+    // ========================================
+    // TOAST
+    // ========================================
+    function showToast(message, type) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast ' + type;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // ========================================
+    // FORMULARIO — Formspree sin captcha
+    // ========================================
+    const FORMSPREE_URL = 'https://formspree.io/f/xdabzgny';
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const originalBtnHTML = submitBtn.innerHTML;
+    let isSubmitting = false;
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (isSubmitting) return;
+      isSubmitting = true;
+
+      submitBtn.innerHTML = '<span class="iconify animate-spin" data-icon="mdi:loading" data-width="18"></span><span>Enviando...</span>';
+      submitBtn.disabled = true;
+
+      try {
+        const response = await fetch(FORMSPREE_URL, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          submitBtn.innerHTML = '<span class="iconify" data-icon="mdi:check-circle" data-width="18"></span><span>¡Mensaje enviado!</span>';
+          submitBtn.style.background = '#16a34a';
+          showToast('✓ ¡Mensaje enviado! Te contactaremos pronto.', 'success');
+          form.reset();
+          setTimeout(() => {
+            submitBtn.innerHTML = originalBtnHTML;
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+            isSubmitting = false;
+          }, 3500);
+        } else {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.errors ? data.errors[0].message : 'Error del servidor');
+        }
+      } catch (error) {
+        submitBtn.innerHTML = originalBtnHTML;
+        submitBtn.disabled = false;
+        isSubmitting = false;
+        showToast('Error al enviar. Intentá de nuevo o contactanos por WhatsApp.', 'error');
+      }
+    });
+
+    // ========================================
+    // SMOOTH SCROLL
+    // ========================================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // ========================================
+    // NAV SHADOW ON SCROLL
+    // ========================================
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.boxShadow = window.scrollY > 100 ? '0 4px 30px rgba(0,0,0,0.3)' : 'none';
+    });
+  </script>
+</body>
+</html>
